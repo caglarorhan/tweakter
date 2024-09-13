@@ -14,7 +14,7 @@ Tweakter is a browser extension designed to enhance your Twitter (X) web experie
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/tweakter.git
+    git clone https://github.com/caglarorhan/tweakter.git
     ```
 
 2. Open your browser and navigate to the extensions page:
@@ -103,7 +103,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Contact
 
-For any questions or suggestions, please open an issue or contact us at [your-email@example.com](mailto:your-email@example.com).
+For any questions or suggestions, please open an issue or contact us at [caglaror@gmail.com](mailto:caglaror@gmail.com).
 
 ---
 
