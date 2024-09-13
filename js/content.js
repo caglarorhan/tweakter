@@ -3,7 +3,7 @@ const tweakter = {
     scrollAmount:300, // Threshold to trigger ad removal (in pixels)
     lastScrollY:0, // Store the previous scroll position
     tweaks:{
-        adds: false,
+        ads: false,
         foryou: false,
         trending: true,
         notifications:true
@@ -27,14 +27,14 @@ const tweakter = {
     runTweaks(){
         Object.entries(this.tweaks).forEach(([key,value])=>{
             if(!value){
-                console.log(this);
-                this.tweakRunners[key]();
+                console.log(key, " must be run now!")
+                tweakter.tweakRunners[key]();
             }
         });
     },
     tweakRunners:{
-            adds(){
-                window.addEventListener("load", removeAdds); // Call once on page load
+            ads(){
+                window.addEventListener("load", removeAds); // Call once on page load
                 window.addEventListener("scroll", onScroll); // Call onScroll function on scroll
                 function onScroll() {
                     const currentScrollY = window.scrollY; // Get current scroll position
@@ -42,11 +42,11 @@ const tweakter = {
                     // Check if scrolled amount is greater than or equal to the threshold
                     // and the scroll direction has changed (prevents excessive calls)
                     if (Math.abs(currentScrollY - tweakter.lastScrollY) >= tweakter.scrollAmount) {
-                        removeAdds();
+                        removeAds();
                         tweakter.lastScrollY = currentScrollY; // Update last scroll position
                     }
                 }
-                function removeAdds(){
+                function removeAds(){
                     console.log('Twitter ad remover function called!');
                     if (document.querySelector('[data-testid=placementTracking]')) {
                         document.querySelectorAll('[data-testid=placementTracking] article').forEach(ad => {
@@ -67,8 +67,7 @@ const tweakter = {
     jobs:{
         updateTweaks(payload){
             console.log("Dogru tabi yakaladi");
-            let checks = JSON.parse(payload);
-            Object.entries(checks).forEach(([key, value])=>{
+            Object.entries(payload).forEach(([key, value])=>{
                 tweakter.tweaks[key] = value;
             });
             tweakter.saveTweaks();
@@ -79,11 +78,11 @@ const tweakter = {
         sendMessageToPopup(messageObject){browser.runtime.sendMessage(messageObject)},
         activateListeners(){
             browser.runtime.onMessage.addListener(async (request)=>{
-                let request = JSON.parse(request);
+                console.log(request);
                 let jobType = request.type;
-                let payload = request.payload;
-                if(this.jobs[jobType]){
-                    this.jobs[jobType](payload)
+                let payload = JSON.parse(request.payload);
+                if(tweakter.jobs[jobType]){
+                    tweakter.jobs[jobType](payload)
                 }
                 else{
                     console.log("No job found with the specified type: ", jobType);

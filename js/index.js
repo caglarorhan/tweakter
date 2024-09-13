@@ -11,7 +11,7 @@ let tweakter ={
     browser.tabs.query({}, function (tabs) {
         console.log(tabs)
         let targetTab = tabs.find(tab => tab.url.includes("x.com"));
-        console.log("Evet hedef tabimiz bulundu")
+        //console.log("Evet hedef tabimiz bulundu")
         if (targetTab) {
             browser.tabs.sendMessage(targetTab.id, messageObject);
         } else {
@@ -26,9 +26,13 @@ let tweakter ={
         })
 
         document.querySelectorAll('input[type="checkbox"]').forEach((checkbox)=>{
-            let payload = {};
-            payload[checkbox.name] = checkbox.checked;
-            this.sendMessageToContent({type: "updateTweaks", payload: JSON.stringify(payload)});
+                checkbox.addEventListener('change', (e)=>{
+                    let checks = {};
+                    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox)=>{
+                        checks[checkbox.name] = checkbox.checked;
+                    })
+                    this.sendMessageToContent({type:"updateTweaks", payload:JSON.stringify(checks)});
+                })
         })
     },
     jobs:{

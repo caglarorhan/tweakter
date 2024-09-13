@@ -2,15 +2,17 @@
 
 Tweakter is a browser extension designed to enhance your Twitter (X) web experience by providing various tweaks and customizations. This extension allows users to hide ads, remove the "For You" tab, and more, making your Twitter browsing more enjoyable and less cluttered.
 
-## Features
+## Features/TODOs
 
-- **Hide Ads**: Automatically removes ads from your Twitter feed.
-- **Hide "For You" Tab**: Removes the "For You" tab from the Twitter interface.
-- **Custom Tweaks**: Additional tweaks to improve your Twitter experience.
+- **Hide Ads**: Automatically removes ads from your Twitter feed. ✅
+- **Hide "For You" Tab**: Removes the "For You" tab from the Twitter interface.✅
+- **Auto Thread**: Auto thread feature from your long texts. 
+- **Summarize Any Tab**: Summarize the day (any tab) feature. 
+- **Auto Thread**: Writing Bold, Italic, Underlined. 
 
 ## Installation
 
-### From Source
+### From Source (GitHub Repo)
 
 1. Clone the repository:
     ```sh
@@ -27,8 +29,8 @@ Tweakter is a browser extension designed to enhance your Twitter (X) web experie
 
 ### From Web Store
 
-- **Chrome Web Store**: [Link to Chrome Web Store](#)
-- **Firefox Add-ons**: [Link to Firefox Add-ons](#)
+- **Chrome Web Store**: [Link to Chrome Web Store](#) /not ready
+- **Firefox Add-ons**: [Link to Firefox Add-ons](#) / not ready
 
 ## Usage
 
@@ -40,24 +42,43 @@ Tweakter is a browser extension designed to enhance your Twitter (X) web experie
 
 tweakter/ 
 ├── css/ 
+
 │ 
+
 └── index.css 
+
 ├── js/ 
+
 │ 
+
 ├── content.js 
+
 │ 
+
 ├── index.js 
+
 │ 
+
 └── background.js 
+
 ├── images/ 
+
 │ 
+
 ├── icon16.png 
+
 │ 
+
 ├── icon48.png 
+
 │ 
+
 └── icon128.png 
+
 ├── manifest.json 
+
 ├── popup.html 
+
 └── README.md
 
 
