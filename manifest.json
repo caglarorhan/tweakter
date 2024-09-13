@@ -1,0 +1,32 @@
+{
+    "name": "Tweakter",
+    "description" : "Helps to tweak Twitter (X)",
+    "version": "2024.0.1",
+    "manifest_version": 3,
+    "action": {
+      "default_popup": "index.html",
+      "default_title": "Tweakter",
+      "default_icon": {
+        "16": "./img/png/tweakter-16.png",
+        "128": "./img/png/tweakter-128.png"
+      }
+    },
+    "icons": {
+      "16": "./img/png/tweakter-16.png",
+      "32": "./img/png/tweakter-32.png",
+      "64": "./img/png/tweakter-64.png",
+      "128": "./img/png/tweakter-128.png",
+      "256": "./img/png/tweakter-256.png",
+      "512": "./img/png/tweakter-512.png"
+    },
+    "permissions": [
+      "tabs",
+      "activeTab"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://*.twitter.com/*", "https://twitter.com/*", "https://*.x.com/*", "https://x.com/*"],
+        "js": ["./js/content.js"]
+      }
+    ]
+  }
