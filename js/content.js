@@ -3,9 +3,10 @@ const tweakter = {
     scrollAmount:300, // Threshold to trigger ad removal (in pixels)
     lastScrollY:0, // Store the previous scroll position
     isTargetObserverActive: false,
+    eventListenerBucket:[],
     tweaks:{
-        ads: false,
-        foryou: false
+        ads: true,
+        foryou: true
     },
     async init(){
         this.utils.activateListeners();
@@ -25,33 +26,47 @@ const tweakter = {
     },
     runTweaks(){
         Object.entries(this.tweaks).forEach(([key,value])=>{
-            if(!value){
                 console.log(key, " must be run now!")
-                tweakter.tweakRunners[key]();
-            }
+                tweakter.tweakRunners[key](value);
         });
         // Set Observer for ads
         this.utils.activateObservers();
     },
     tweakRunners:{
-            ads(){
-                window.addEventListener("load", tweakter.jobs.removeAds); // Call once on page load
-                window.addEventListener("scroll", onScroll); // Call onScroll function on scroll
-                function onScroll() {
-                    const currentScrollY = window.scrollY; // Get current scroll position
+            ads(isIt){
+                if(isIt){
+                    tweakter.eventListenerBucket.push(window.addEventListener("load", tweakter.jobs.removeAds)); // Call once on page load
+                    tweakter.eventListenerBucket.push(window.addEventListener("scroll", onScroll)); // Call onScroll function on scroll
+                    function onScroll() {
+                        const currentScrollY = window.scrollY; // Get current scroll position
+    
+                        // Check if scrolled amount is greater than or equal to the threshold
+                        // and the scroll direction has changed (prevents excessive calls)
+                        if (Math.abs(currentScrollY - tweakter.lastScrollY) >= tweakter.scrollAmount) {
+                            tweakter.jobs.removeAds();
+                            tweakter.lastScrollY = currentScrollY; // Update last scroll position
+                        }
+                    }
+                }else{
+                    tweakter.eventListenerBucket = [];
+                }
 
-                    // Check if scrolled amount is greater than or equal to the threshold
-                    // and the scroll direction has changed (prevents excessive calls)
-                    if (Math.abs(currentScrollY - tweakter.lastScrollY) >= tweakter.scrollAmount) {
-                        tweakter.jobs.removeAds();
-                        tweakter.lastScrollY = currentScrollY; // Update last scroll position
+            },
+            foryou(isIt){
+                if(isIt){
+                    if(document.getElementById('foryou-remover')) return;
+                    document.querySelector(`div[role="tablist"] > div[role="presentation"]:has(a):nth-child(2) a`).click();
+                    let newCSS = document.createElement('style');
+                    newCSS.id = 'foryou-remover';
+                    newCSS.innerHTML = `div[role="tablist"] > div[role="presentation"]:has(a):first-child {display: none !important;}`;
+                    document.head.appendChild(newCSS);
+                }else{
+                    if(document.getElementById('foryou-remover')){
+                        document.getElementById('foryou-remover').remove();
+                        document.querySelector(`div[role="tablist"] > div[role="presentation"]:has(a):nth-child(1) a`).click();
                     }
                 }
-            },
-            foryou(){
-                let newCSS = document.createElement('style');
-                newCSS.innerHTML = `div[role="tablist"] > div[role="presentation"]:has(a):first-child {display: none !important;}`;
-                document.head.appendChild(newCSS);
+                
                 //console.log("For you remover function called!");
             },
             trending(){},
@@ -68,6 +83,7 @@ const tweakter = {
         },
         getTweaks(){
             console.log("getTweaks talebi geldi ve yanit gonderiliyor");
+            tweakter.syncTweaks();
             tweakter.utils.sendMessageToPopup({type:"updateCheckboxes", payload:JSON.stringify(tweakter.tweaks)});
             return true;
         },
@@ -84,12 +100,12 @@ const tweakter = {
         sendMessageToPopup(messageObject){browser.runtime.sendMessage(messageObject)},
         activateListeners(){
             browser.runtime.onMessage.addListener( (request)=>{
-                //console.log(request);
+                console.log(request);
                 let jobType = request.type;
                 //console.log(jobType);
                 let payload = JSON.parse(request.payload);
                 //console.log(payload);
-                tweakter.jobs[jobType](payload);
+                //tweakter.jobs[jobType](payload);
                 if(tweakter.jobs[jobType]){
                     //console.log(jobType, " job found and running");
                     tweakter.jobs[jobType](payload)

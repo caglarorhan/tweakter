@@ -89,3 +89,21 @@ header h1 {
     margin-left: 10px;
     font-size: 16px;
 }
+
+footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Add padding to give some space inside the footer */
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center items vertically */
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}

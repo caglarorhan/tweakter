@@ -7,19 +7,17 @@ let tweakter ={
         this.commonJobs();
     },
     sendMessageToContent:function (messageObject){
-
-    browser.tabs.query({}, function (tabs) {
-        console.log(tabs)
-        let targetTab = tabs.find(tab => tab.url.includes(tweakter.targetDomain));
-        console.log(targetTab);
-        if (targetTab) {
-            console.log("Evet hedef tabimiz bulundu")
-            browser.tabs.sendMessage(targetTab.id, messageObject);
-        } else {
-            console.log("No tab found with the specified URL.");
-        }
-    });
-
+        browser.tabs.query({}, function (tabs) {
+            console.log(tabs)
+            let targetTab = tabs.find(tab => tab.url.includes(tweakter.targetDomain));
+            console.log(targetTab);
+            if (targetTab) {
+                console.log("Evet hedef tabimiz bulundu")
+                browser.tabs.sendMessage(targetTab.id, messageObject);
+            } else {
+                console.log("No tab found with the specified URL.");
+            }
+        });
     },
     commonJobs(){
         browser.runtime.onMessage.addListener(async (request)=>{
@@ -52,11 +50,6 @@ let tweakter ={
     }
 
 }
-
-
-
-
-
 
 window.addEventListener('load', ()=>{
     tweakter.init();
