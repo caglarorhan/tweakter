@@ -34,6 +34,7 @@ let tweakter ={
                         checks[checkbox.id] = checkbox.checked;
                     })
                     this.sendMessageToContent({type:"updateTweaks", payload:JSON.stringify(checks)});
+                    this.jobs.updateCheckboxes(JSON.stringify(checks));
                 })
         })
 
@@ -45,6 +46,7 @@ let tweakter ={
             let checks = JSON.parse(payload);
             Object.entries(checks).forEach(([key, value])=>{
                 document.getElementById(key).checked = value?"checked":"";
+                document.querySelector(`.${key}-mean`).innerText = value?"show":"hide";
             })
         },
     }

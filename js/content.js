@@ -26,7 +26,7 @@ const tweakter = {
     },
     runTweaks(){
         Object.entries(this.tweaks).forEach(([key,value])=>{
-                console.log(key, " must be run now!")
+                //console.log(key, " must be run now!")
                 tweakter.tweakRunners[key](value);
         });
         // Set Observer for ads
@@ -53,9 +53,22 @@ const tweakter = {
 
             },
             foryou(isIt){
+                //console.log("foryou metodu cagirildi");
+                
                 if(isIt){
                     if(document.getElementById('foryou-remover')) return;
-                    document.querySelector(`div[role="tablist"] > div[role="presentation"]:has(a):nth-child(2) a`).click();
+                    let intervalCounter = 0;
+                    const tabElementLookUpInterval = setInterval(() => {
+                        const tabElement = document.querySelector(`div[role="tablist"] > div[role="presentation"]:has(a):nth-child(2) a`);
+                        if (tabElement && window.location.href.includes('x.com/home')) {
+                            tabElement.click();
+                            clearInterval(tabElementLookUpInterval);
+                        }else if(intervalCounter > 30){
+                            clearInterval(tabElementLookUpInterval);
+                            console.log("Couldn't find the element after 10 tries, gonna give up!");
+                        }
+                        intervalCounter++;
+                    }, 375);
                     let newCSS = document.createElement('style');
                     newCSS.id = 'foryou-remover';
                     newCSS.innerHTML = `div[role="tablist"] > div[role="presentation"]:has(a):first-child {display: none !important;}`;
@@ -63,7 +76,10 @@ const tweakter = {
                 }else{
                     if(document.getElementById('foryou-remover')){
                         document.getElementById('foryou-remover').remove();
-                        document.querySelector(`div[role="tablist"] > div[role="presentation"]:has(a):nth-child(1) a`).click();
+                        if(window.location.href.includes('x.com/home')){
+                            document.querySelector(`div[role="tablist"] > div[role="presentation"]:has(a):nth-child(1) a`).click();
+                        }
+                        
                     }
                 }
                 
